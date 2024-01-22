@@ -8,6 +8,7 @@ import './sign-up.styles.scss'
 import Button from "../button/button.component";
 
 
+
 export default function SignUp() {
   const defaultFormFields = {
     displayName: "",
@@ -18,16 +19,20 @@ export default function SignUp() {
 
   const [formFileds, setFormfFields] = useState(defaultFormFields);
   const { displayName, email, password, confirmPassword } = formFileds;
+ 
 
+  //handles form changes
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormfFields({ ...formFileds, [name]: value });
   };
 
+  //to re-set the forms
   const resetFormFeilds = () => {
     setFormfFields(defaultFormFields);
   };
 
+  //on submitting the form this method triggers
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -41,6 +46,7 @@ export default function SignUp() {
         password
       );
       await creaUserDocumentFromAuth(user, { displayName });
+      
       resetFormFeilds();
     } catch (error) {
       if (error.code === "auth/email-already-in-use") {

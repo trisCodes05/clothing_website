@@ -1,5 +1,13 @@
 import { initializeApp } from "firebase/app";
-import { getAuth, signInWithPopup, GoogleAuthProvider , createUserWithEmailAndPassword} from "firebase/auth";
+import {
+  getAuth,
+  signInWithPopup,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  createUserWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+} from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -26,13 +34,14 @@ export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
 
 export const db = getFirestore();
 
-export const creaUserDocumentFromAuth = async (userAuth, additionalInformation={}) => {
-  if(!userAuth) return;
+export const creaUserDocumentFromAuth = async (
+  userAuth,
+  additionalInformation = {}
+) => {
+  if (!userAuth) return;
 
   const userDocRef = doc(db, "users", userAuth.uid);
   const userSnapshot = await getDoc(userDocRef);
-  
- 
 
   //if user data exists
   if (!userSnapshot.exists()) {
@@ -44,7 +53,7 @@ export const creaUserDocumentFromAuth = async (userAuth, additionalInformation={
         displayName,
         email,
         createdAt,
-        ...additionalInformation
+        ...additionalInformation,
       });
     } catch (error) {
       console.log("error creating the user", error.message);
@@ -57,9 +66,26 @@ export const creaUserDocumentFromAuth = async (userAuth, additionalInformation={
   //return userDocRef
 };
 
-
 export const createAuthUserWithEmailAndPassword = async (email, password) => {
-  if(!email || !password) return ;
+  if (!email || !password) return;
 
-  return await createUserWithEmailAndPassword(auth, email, password)
-}
+  return await createUserWithEmailAndPassword(auth, email, password);
+};
+
+export const signInAuthUserWithEmailAndPassword = async (email, password) => {
+  if (!email || !password) return;
+
+  return await signInWithEmailAndPassword(auth, email, password);
+};
+
+// export const SignAuthUserOut =  async()=>{
+//   signOut(auth).then(()=>{
+//     console.log("signed out")
+//   }).catch((error)=>{
+//     console.log("error signig out",error )
+//   })
+// } my method
+
+export const signAuthUserOut = async () => await signOut(auth);
+
+export const onAuthStateChangedListener = (callback) => onAuthStateChanged(auth,callback); //like a watchman , always listening or watching
