@@ -6,7 +6,7 @@ import { UserContext } from "../../contexts/user.context";
 import { CartContext } from "../../contexts/cart.context";
 import { signAuthUserOut } from "../../utils/firebase/firebase.utils";
 import CartIcon from "../../components/cart-icon/cart-icon.component";
-import CartDropdown from '../../components/cart-dropdown/cart-dropdown.component';
+import CartDropdown from "../../components/cart-dropdown/cart-dropdown.component";
 
 function Navigation() {
   const { currentUser } = useContext(UserContext);
@@ -14,8 +14,7 @@ function Navigation() {
 
   const signOutHandler = async () => {
     await signAuthUserOut();
-  
-  }
+  };
   return (
     <Fragment>
       <div className="navigation">
@@ -26,9 +25,11 @@ function Navigation() {
           <Link className="nav-link" to="/shop">
             SHOP
           </Link>
+
           <Link className="nav-link" to="/contact">
             CONTACT
           </Link>
+
           {currentUser ? (
             <Link className="nav-link" to="/auth" onClick={signOutHandler}>
               SIGN OUT
@@ -38,9 +39,10 @@ function Navigation() {
               SIGN IN
             </Link>
           )}
-          <CartIcon/>
+          
+          <CartIcon />
         </div>
-        {isOpen && <CartDropdown/>}
+        {isOpen && <CartDropdown />}
       </div>
       <Outlet />
     </Fragment>
