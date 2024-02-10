@@ -1,17 +1,15 @@
 import React, { useState, useContext } from "react";
 import {
   signInWithGooglePopup,
-  creaUserDocumentFromAuth,
   signInAuthUserWithEmailAndPassword,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
-import Button from "../button/button.component";
-import "./sign-in.styles.scss";
-
+import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
+import { SignINContainer, ButtonContainer } from "./sign-in.styles.jsx";
 
 export default function SignIn() {
   const signInWithGoogle = async () => {
-     await signInWithGooglePopup();
+    await signInWithGooglePopup();
   };
 
   const defaultFormFields = {
@@ -21,8 +19,6 @@ export default function SignIn() {
 
   const [formFileds, setFormfFields] = useState(defaultFormFields);
   const { email, password } = formFileds;
-
- 
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -36,28 +32,25 @@ export default function SignIn() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await signInAuthUserWithEmailAndPassword(
-        email,
-        password
-      );
+      await signInAuthUserWithEmailAndPassword(email, password);
 
       resetFormFeilds();
     } catch (error) {
-      switch(error.code){
-        case "auth/wrong-password" :
+      switch (error.code) {
+        case "auth/wrong-password":
           alert("Incorrect Password");
           break;
         case "auth/user-not-found":
           alert("No user associated with this email");
           break;
-      default:
-        console.log("user login encountered an error", error);
-      } 
+        default:
+          console.log("user login encountered an error", error);
+      }
     }
   };
 
   return (
-    <div className="sign-in-container">
+    <SignINContainer>
       <h2>Already have an account</h2>
       <span>Sign In with your email and password</span>
       <form onSubmit={handleSubmit}>
@@ -80,13 +73,17 @@ export default function SignIn() {
           value={password}
           onChange={handleChange}
         />
-        <div className="buttons-container">
+        <ButtonContainer>
           <Button type="submit">Sign Up</Button>
-          <Button  buttonType="google" type="button" onClick={signInWithGoogle}>
+          <Button
+            buttonType={BUTTON_TYPE_CLASSES.google}
+            type="button"
+            onClick={signInWithGoogle}
+          >
             Google SignIn
           </Button>
-        </div>
+        </ButtonContainer>
       </form>
-    </div>
+    </SignINContainer>
   );
 }

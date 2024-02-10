@@ -4,8 +4,8 @@ import {
   creaUserDocumentFromAuth,
 } from "../../utils/firebase/firebase.utils";
 import FormInput from "../form-input/form-input.component";
-import './sign-up.styles.scss'
 import Button from "../button/button.component";
+import {SignUPContainer} from './sign-up.styles.jsx'
 
 
 
@@ -57,7 +57,7 @@ export default function SignUp() {
   };
 
   return (
-    <div className="sign-up-container">
+    <SignUPContainer>
     <h2>Don't have an account</h2>
     <span>Sign Up with Email and password</span>
       <form onSubmit={handleSubmit}>
@@ -102,6 +102,6 @@ export default function SignUp() {
         />
         <Button type="submit" >Sign Up</Button>
       </form>
-    </div>
+    </SignUPContainer>
   );
 }
